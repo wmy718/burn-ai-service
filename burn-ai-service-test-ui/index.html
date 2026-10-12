@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burn AI 接口测试台</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">burn-ai-service test console</p>
+        <h1>烧伤 / 瘢痕指标提取与报告生成测试台</h1>
+      </div>
+      <div class="top-actions">
+        <select id="disease">
+          <option value="burn">烧伤 burn</option>
+          <option value="scar">瘢痕 scar</option>
+        </select>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p id="caseLabel">示例病例</p>
+          <h2 id="caseTitle">浅Ⅱ度热液烫伤测试样例</h2>
+          <p id="caseDesc">文本来自护士记录，图片 JSON 模拟 Python 视觉识别结果。点击提取后可编辑指标，再生成决策树报告。</p>
+        </div>
+        <div class="hero-image" aria-label="clinical sample image"></div>
+      </section>
+
+      <section class="grid two">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">input</p>
+              <h3>识别文本</h3>
+            </div>
+          </div>
+          <textarea id="clinicalText" spellcheck="false"></textarea>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">python json</p>
+              <h3>图像识别 JSON</h3>
+            </div>
+          </div>
+          <textarea id="imageJson" spellcheck="false"></textarea>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">unified extraction</p>
+            <h3>统一指标提取</h3>
+          </div>
+          <button id="extractAllBtn">提取文本与图片指标并看日志</button>
+        </div>
+        <div id="extractionMeta" class="meta">护士文本和检测后的图片 JSON 将通过同一个接口提交。</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">editable indicators</p>
+            <h3>前端可编辑指标</h3>
+          </div>
+          <div class="button-row">
+            <button id="generateBtn">生成报告并看日志</button>
+          </div>
+        </div>
+        <div id="indicatorSummary" class="meta">还没有提取结果。</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>指标</th>
+                <th>indicator_code</th>
+                <th>指标值</th>
+                <th>来源</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="indicatorRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="grid report-grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">stream log</p>
+              <h3>指标提取 / 决策树流式日志</h3>
+            </div>
+            <span id="requestIdView" class="pill">requestId: -</span>
+          </div>
+          <div id="logs" class="logs"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">output</p>
+              <h3>报告正文</h3>
+            </div>
+            <span id="reportMeta" class="pill">未生成</span>
+          </div>
+          <div id="reportSections" class="report-sections"></div>
+        </article>
+      </section>
+
+      <section class="grid two">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">decision json</p>
+              <h3>决策树 JSON 字段</h3>
+            </div>
+          </div>
+          <pre id="decisionJson">{}</pre>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">raw response</p>
+              <h3>完整响应</h3>
+            </div>
+          </div>
+          <pre id="rawJson">{}</pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

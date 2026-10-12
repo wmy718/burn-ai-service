@@ -1,0 +1,15 @@
+**/target/
+**/node_modules/
+**/.runtime/
+**/.idea/
+**/*.log
+**/*.pid
+**/config-local.bat
+**/application-local*.yml
+.env
+.env.*
+!.env.example
+*.tar
+*.zip
+.DS_Store
+Thumbs.db

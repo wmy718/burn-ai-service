@@ -1,0 +1,50 @@
+server:
+  port: ${BURN_AI_PORT:8091}
+
+spring:
+  application:
+    name: burn-ai-service
+  datasource:
+    url: ${BURN_AI_DB_URL:jdbc:mysql://127.0.0.1:3306/burn_treatment?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${BURN_AI_DB_USERNAME:root}
+    password: ${BURN_AI_DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    default-property-inclusion: non_null
+
+springdoc:
+  swagger-ui:
+    path: /docs
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+burn-ai:
+  # 当前部署使用宿主机上的 vLLM。
+  provider: ${BURN_AI_PROVIDER:vllm}
+
+  # 千问配置仅在 provider=qwen 时启用；部署到 vLLM 时保持关闭。
+  qwen:
+    enabled: ${BURN_AI_QWEN_ENABLED:false}
+    api-key: ${BURN_AI_QWEN_API_KEY:}
+    endpoint: ${BURN_AI_QWEN_ENDPOINT:https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions}
+    model: ${BURN_AI_QWEN_MODEL:qwen-plus}
+    timeout-seconds: ${BURN_AI_QWEN_TIMEOUT_SECONDS:180}
+
+  # vLLM 配置。provider=vllm 时生效。
+  # endpoint 是 vLLM 提供的 OpenAI-compatible Chat Completions 地址。
+  vllm:
+    enabled: ${BURN_AI_VLLM_ENABLED:true}
+    # 8091 在 Docker 中运行，通过宿主机网关访问宿主机上的 vLLM。
+    endpoint: ${BURN_AI_VLLM_ENDPOINT:http://127.0.0.1:8000/v1/chat/completions}
+    # 必须与启动 vLLM 时暴露的 served-model-name 一致。
+    model: ${BURN_AI_VLLM_MODEL:Qwen3.5-9B}
+    # vLLM 未启用鉴权时可保持 EMPTY。
+    api-key: ${BURN_AI_VLLM_API_KEY:EMPTY}
+    timeout-seconds: ${BURN_AI_VLLM_TIMEOUT_SECONDS:180}
+
+  performance:
+    slow-stage-warning-ms: ${BURN_AI_SLOW_STAGE_WARNING_MS:180000}
+    hard-stage-limit-ms: ${BURN_AI_HARD_STAGE_LIMIT_MS:300000}
